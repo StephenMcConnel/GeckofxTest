@@ -5,7 +5,11 @@ Try to record MP3 files directly from the browser using C#, Geckofx45, JS, and H
 
 Note: this doesn't work going through C# and Geckofx45.  It does work with Firefox45-esr.
 But we want it to work with C# and Geckofx45!  This program is a testbed for getting it to
-work.
+work.  To see what should happen, start up firefox and load the index.html file under
+Recordmp3js.  On Linux, the URL will look somewhat similar to
+
+    file:///d/steve/work/GeckofxTest/Recordmp3js/index.html
+
 
 License
 =======
