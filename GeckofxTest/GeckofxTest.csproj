@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{27006820-2811-4C17-9E9F-D5CFDC4FA800}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GeckofxTest</RootNamespace>
+    <AssemblyName>GeckofxTest</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\output\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnvironmentVariables>
+      <EnvironmentVariables>
+        <Variable name="LD_LIBRARY_PATH" value="$(OutDir)/Firefox" />
+        <Variable name="LD_PRELOAD" value="$(OutDir)/Firefox/libgeckofix.so" />
+      </EnvironmentVariables>
+    </EnvironmentVariables>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\output\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Geckofx-Core">
+      <HintPath>..\packages\Geckofx45.64.Linux.45.0.23.0\lib\net40\Geckofx-Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Geckofx-Winforms">
+      <HintPath>..\packages\Geckofx45.64.Linux.45.0.23.0\lib\net40\Geckofx-Winforms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="Firefox\application.ini" />
+    <None Include="Firefox\crashreporter.ini" />
+    <None Include="Firefox\libfreebl3.chk" />
+    <None Include="Firefox\libfreebl3.so" />
+    <None Include="Firefox\libgeckofix.so" />
+    <None Include="Firefox\liblgpllibs.so" />
+    <None Include="Firefox\libmozsqlite3.so" />
+    <None Include="Firefox\libnspr4.so" />
+    <None Include="Firefox\libnss3.so" />
+    <None Include="Firefox\libnssckbi.so" />
+    <None Include="Firefox\libnssdbm3.chk" />
+    <None Include="Firefox\libnssdbm3.so" />
+    <None Include="Firefox\libnssutil3.so" />
+    <None Include="Firefox\libplc4.so" />
+    <None Include="Firefox\libplds4.so" />
+    <None Include="Firefox\libsmime3.so" />
+    <None Include="Firefox\libsoftokn3.chk" />
+    <None Include="Firefox\libsoftokn3.so" />
+    <None Include="Firefox\libssl3.so" />
+    <None Include="Firefox\libxul.so" />
+    <None Include="Firefox\omni.ja" />
+    <None Include="Firefox\platform.ini" />
+    <None Include="Firefox\update-settings.ini" />
+    <None Include="Firefox\updater.ini" />
+  </ItemGroup>
+  <!-- copy the appropriate Geckofx45 files to the output directory, first creating it if necessary -->
+  <Target Name="BeforeBuild" Condition="'$(OS)'=='Windows_NT'">
+    <Exec Command="mkdir $(OutDir)Firefox" Condition="!Exists('$(OutDir)Firefox')" />
+    <Exec Command="copy /Y $(SolutionDir)packages\Geckofx45.45.0.19.0\content\Firefox\*.* $(OutDir)Firefox" />
+    <Exec Command="mkdir $(OutDir)Recordmp3js" Condition="!Exists('$(OutDir)Recordmp3js)" />
+    <Exec Command="copy /Y $(SolutionDir)Recordmp3js\*.* $(OutDir)Recordmp3js" />
+  </Target>
+  <Target Name="BeforeResolveReferences" Condition="'$(OS)'!='Windows_NT'">
+    <Exec Command="mkdir -p $(OutDir)" />
+    <Exec Command="find $(SolutionDir)packages/Geckofx45.64.Linux.45.0.23.0 -name 'Geckofx-*.*' -exec cp -pvn '{}' $(OutDir) ';'" />
+    <Exec Command="find $(SolutionDir)packages/Geckofx45.64.Linux.45.0.23.0 -name 'Firefox*' -type d -exec cp -pRvn '{}' $(OutDir)Firefox ';'" />
+    <Exec Command="cp -pvRn $(SolutionDir)Recordmp3js $(OutDir)" />
+  </Target>
+</Project>
